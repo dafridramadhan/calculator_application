@@ -17,21 +17,21 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     '(',
     ')',
     '/',
+    '*',
     '7',
     '8',
     '9',
-    '*',
+    '+',
     '4',
     '5',
     '6',
-    '+',
+    '-',
     '1',
     '2',
     '3',
-    '-',
     'C',
-    '0',
     '.',
+    '0',
     '=',
   ];
 
@@ -42,7 +42,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         body: Column(
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height / 2.5,
+              height: MediaQuery.of(context).size.height / 3.2,
               child: resultWidget(),
             ),
             Expanded(child: buttonWidget()),
@@ -91,23 +91,16 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   }
 
   getColor(String text) {
-    if(text == '/' || text == '*' || text == '+' || text == '-' || text == 'C' || text == '(' || text == ')') {
-      return Colors.redAccent;
-    }
-    if(text == '=' || text == 'AC') {
+    if(text == '=' || text == 'AC' || text == 'C') {
       return Colors.white;
     }
     return Colors.indigo;
   }
 
   getBgColor(String text) {
-    if(text == 'AC') {
-      return Colors.redAccent;
+    if(text == '=' || text == 'C' || text == 'AC') {
+      return Colors.indigo;
     }
-    if(text == '=') {
-      return const Color.fromARGB(255, 104, 204, 159);
-    }
-
     return Colors.white;
   }
 
@@ -162,10 +155,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       result = calculate();
       userInput = result;
       if(userInput.endsWith('.0')) {
-        userInput = userInput.replaceAll('.0', '0');
+        userInput = userInput.replaceAll('.0', '');
       }
       if(result.endsWith('.0')) {
-        result = result.replaceAll('.0', '0');
+        result = result.replaceAll('.0', '');
       }
       return;
     }
@@ -175,8 +168,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   String calculate() {
     try {
       var exp = Parser().parse(userInput);
-      var eveluation = exp.evaluate(EvaluationType.REAL, ContextModel());
-      return eveluation.toString();
+      var evaluation = exp.evaluate(EvaluationType.REAL, ContextModel());
+      return evaluation.toString();
     } catch(e) {
       return 'error';
     }
